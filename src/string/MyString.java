@@ -76,7 +76,7 @@ public class MyString {
 	}
 
 	public int find(MyString pattern) {
-		for (int occurrence_start = 0; occurrence_start < data.size(); ++occurrence_start) {
+		for (int occurrence_start = 0; occurrence_start + pattern.data.size() <= data.size(); ++occurrence_start) {
 			if (matchesFrom(occurrence_start, pattern)) {
 				return occurrence_start;
 			}
