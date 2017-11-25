@@ -66,5 +66,34 @@ public class MyString {
 		data.subList(slow_index, data.size()).clear();
 	}
 
+	private static int greatestCommonDivisor(int a, int b) {
+		return (b == 0 ? a : greatestCommonDivisor(b, a % b));
+	}
+
+	private void rotateFrom(int start, int shift) {
+		int n = data.size();
+		char oldChar = data.get(start);
+		int j = start;
+		int i = (j - shift + n) % n;
+		while (i != start) {
+			data.set(j, data.get(i));
+			j = i;
+			i = (i - shift + n) % n;
+		}
+		data.set(j, oldChar);
+	}
+
+	public void rotate(int shift) {
+		if (data.isEmpty()) {
+			return;
+		}
+
+		shift %= data.size();
+		int gcd = greatestCommonDivisor(data.size(), shift);
+		for (int i = 0; i < gcd; ++i) {
+			rotateFrom(i, shift);
+		}
+	}
+
 	private ArrayList<Character> data;
 }

@@ -51,4 +51,22 @@ class MyStringTest {
 		assertEquals("a", cloneWithRepeatedDeduplication("aabba"));
 		assertEquals("", cloneWithRepeatedDeduplication("aabbaa"));
 	}
+
+	private static String cloneWithRotation(String str, int shift) {
+		MyString myStr = new MyString(str);
+		myStr.rotate(shift);
+		return myStr.toString();
+	}
+
+	@Test
+	void testRotate() {
+		assertEquals("abc", cloneWithRotation("cab", 2));
+		assertEquals("abc", cloneWithRotation("abc", 3));
+		assertEquals("abc", cloneWithRotation("abc", 6));
+		assertEquals("cdefab", cloneWithRotation("abcdef", 4));
+		assertEquals("defabc", cloneWithRotation("abcdef", 3));
+		assertEquals("efabcd", cloneWithRotation("abcdef", 2));
+		assertEquals("fabcde", cloneWithRotation("abcdef", 1));
+		assertEquals("", cloneWithRotation("", 2));
+	}
 }
