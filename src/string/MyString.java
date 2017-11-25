@@ -73,14 +73,14 @@ public class MyString {
 	private void rotateFrom(int start, int shift) {
 		int n = data.size();
 		char oldChar = data.get(start);
-		int j = start;
-		int i = (j - shift + n) % n;
-		while (i != start) {
-			data.set(j, data.get(i));
-			j = i;
-			i = (i - shift + n) % n;
+		int i = start;
+		int j = (start + shift) % n;
+		while (j != start) {
+			data.set(i, data.get(j));
+			i = j;
+			j = (j + shift) % n;
 		}
-		data.set(j, oldChar);
+		data.set(i, oldChar);
 	}
 
 	public void rotate(int shift) {
@@ -88,7 +88,7 @@ public class MyString {
 			return;
 		}
 
-		shift %= data.size();
+		shift = Math.floorMod(data.size() - shift, data.size());
 		int gcd = greatestCommonDivisor(data.size(), shift);
 		for (int i = 0; i < gcd; ++i) {
 			rotateFrom(i, shift);
