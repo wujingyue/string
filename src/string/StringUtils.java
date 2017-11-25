@@ -52,4 +52,42 @@ public class StringUtils {
 		}
 		return -1;
 	}
+
+	private static int[] computePi(String pattern) {
+		int[] pi = new int[pattern.length()];
+		pi[0] = -1;
+		for (int j = 1; j < pattern.length(); ++j) {
+			int k = pi[j - 1];
+			while (k >= 0 && pattern.charAt(k + 1) != pattern.charAt(j)) {
+				k = pi[k];
+			}
+			if (pattern.charAt(k + 1) == pattern.charAt(j)) {
+				++k;
+			}
+			pi[j] = k;
+		}
+		return pi;
+	}
+
+	public static int findUsingKMP(String text, String pattern) {
+		if (pattern.isEmpty()) {
+			return 0;
+		}
+
+		int[] pi = computePi(pattern);
+		int j = -1;
+		for (int i = 0; i < text.length(); ++i) {
+			// text[i - 1] == pattern[j]
+			while (j >= 0 && pattern.charAt(j + 1) != text.charAt(i)) {
+				j = pi[j];
+			}
+			if (pattern.charAt(j + 1) == text.charAt(i)) {
+				++j;
+			}
+			if (j == pattern.length() - 1) {
+				return i - pattern.length() + 1;
+			}
+		}
+		return -1;
+	}
 }

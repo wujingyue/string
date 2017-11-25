@@ -6,27 +6,23 @@ import org.junit.jupiter.api.Test;
 
 class StringUtilsTest {
 
-	@Test
-	void testFind() {
-		assertEquals(1, StringUtils.find("abcd", "bcd"));
-		assertEquals(-1, StringUtils.find("abcd", "bce"));
-		assertEquals(1, StringUtils.find("aabc", "abc"));
-		assertEquals(0, StringUtils.find("aaaa", "a"));
-		assertEquals(-1, StringUtils.find("aaaa", "aaaaa"));
-		assertEquals(0, StringUtils.find("", ""));
-		assertEquals(0, StringUtils.find("a", ""));
+	void verifyAllVersionsOfFind(int expected, String text, String pattern) {
+		assertEquals(expected, StringUtils.find(text, pattern));
+		assertEquals(expected, StringUtils.findUsingRabinKarp(text, pattern));
+		assertEquals(expected, StringUtils.findUsingKMP(text, pattern));
 	}
 
 	@Test
-	void testRabinKarp() {
-		assertEquals(1, StringUtils.findUsingRabinKarp("abcd", "bcd"));
-		assertEquals(-1, StringUtils.findUsingRabinKarp("abcd", "bce"));
-		assertEquals(1, StringUtils.findUsingRabinKarp("aabc", "abc"));
-		assertEquals(0, StringUtils.findUsingRabinKarp("aaaa", "a"));
-		assertEquals(-1, StringUtils.findUsingRabinKarp("aaaa", "aaaaa"));
-		assertEquals(0, StringUtils.findUsingRabinKarp("", ""));
-		assertEquals(0, StringUtils.findUsingRabinKarp("a", ""));
-		assertEquals(22, StringUtils.findUsingRabinKarp("asdassdsdasdasdasdasdasddsasdsdsdaadsdsd", "sdd"));
+	void testFind() {
+		verifyAllVersionsOfFind(1, "abcd", "bcd");
+		verifyAllVersionsOfFind(-1, "abcd", "bce");
+		verifyAllVersionsOfFind(1, "aabc", "abc");
+		verifyAllVersionsOfFind(0, "aaaa", "a");
+		verifyAllVersionsOfFind(-1, "aaaa", "aaaaa");
+		verifyAllVersionsOfFind(0, "", "");
+		verifyAllVersionsOfFind(0, "a", "");
+		verifyAllVersionsOfFind(22, "asdassdsdasdasdasdasdasddsasdsdsdaadsdsd", "sdd");
+		verifyAllVersionsOfFind(13, "baaabbbbaaabbababacabbbbaaabbbbbba", "ababaca");
 	}
 
 	@Test
