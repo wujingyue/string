@@ -66,23 +66,5 @@ public class MyString {
 		data.subList(slow_index, data.size()).clear();
 	}
 
-	private boolean matchesFrom(int occurrence_start, MyString pattern) {
-		for (int i = 0; i < pattern.data.size(); ++i) {
-			if (occurrence_start + i >= data.size() || data.get(occurrence_start + i) != pattern.data.get(i)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public int find(MyString pattern) {
-		for (int occurrence_start = 0; occurrence_start + pattern.data.size() <= data.size(); ++occurrence_start) {
-			if (matchesFrom(occurrence_start, pattern)) {
-				return occurrence_start;
-			}
-		}
-		return -1;
-	}
-
 	private ArrayList<Character> data;
 }
