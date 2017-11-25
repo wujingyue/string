@@ -51,17 +51,4 @@ class MyStringTest {
 		assertEquals("a", cloneWithRepeatedDeduplication("aabba"));
 		assertEquals("", cloneWithRepeatedDeduplication("aabbaa"));
 	}
-
-	private static int findSubstring(String text, String pattern) {
-		return (new MyString(text)).find(new MyString(pattern));
-	}
-
-	@Test
-	void testFind() {
-		assertEquals(1, findSubstring("abcd", "bcd"));
-		assertEquals(-1, findSubstring("abcd", "bce"));
-		assertEquals(1, findSubstring("aabc", "abc"));
-		assertEquals(0, findSubstring("aaaa", "a"));
-		assertEquals(-1, findSubstring("aaaa", "aaaaa"));
-	}
 }
