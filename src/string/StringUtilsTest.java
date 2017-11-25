@@ -26,18 +26,19 @@ class StringUtilsTest {
 		assertEquals(-1, StringUtils.findUsingRabinKarp("aaaa", "aaaaa"));
 		assertEquals(0, StringUtils.findUsingRabinKarp("", ""));
 		assertEquals(0, StringUtils.findUsingRabinKarp("a", ""));
-	}	
-	
+		assertEquals(22, StringUtils.findUsingRabinKarp("asdassdsdasdasdasdasdasddsasdsdsdaadsdsd", "sdd"));
+	}
+
 	@Test
 	void testString() {
 		String str = "ab\u1001";
 		assertEquals(3, str.length());
 		assertEquals(5, str.getBytes().length);
 	}
-	
+
 	@Test
 	void testChar() {
-		char ch = (char)-32768;
-		assertEquals(32768, (int)ch);
+		char ch = (char) -32768;
+		assertEquals(32768, (int) ch);
 	}
 }

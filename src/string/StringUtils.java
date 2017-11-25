@@ -31,6 +31,7 @@ public class StringUtils {
 		for (int i = 0; i < pattern.length(); ++i) {
 			maxCharToPatternLength = maxCharToPatternLength * CHAR_BASE % MAX_PRIME_INT;
 		}
+		long minusMaxCharToPatternLength = (MAX_PRIME_INT - maxCharToPatternLength) % MAX_PRIME_INT;
 
 		long patternHash = 0;
 		for (int i = 0; i < pattern.length(); ++i) {
@@ -42,8 +43,7 @@ public class StringUtils {
 			occurrenceHash = (occurrenceHash * CHAR_BASE + text.charAt(occurrenceEnd)) % MAX_PRIME_INT;
 			int occurrenceStart = occurrenceEnd - pattern.length() + 1;
 			if (occurrenceStart > 0) {
-				occurrenceHash = (occurrenceHash
-						- text.charAt(occurrenceStart - 1) * maxCharToPatternLength % MAX_PRIME_INT + MAX_PRIME_INT)
+				occurrenceHash = (occurrenceHash + text.charAt(occurrenceStart - 1) * minusMaxCharToPatternLength)
 						% MAX_PRIME_INT;
 			}
 			if (occurrenceStart >= 0 && occurrenceHash == patternHash && matchesFrom(text, occurrenceStart, pattern)) {
