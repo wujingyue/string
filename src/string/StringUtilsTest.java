@@ -19,8 +19,8 @@ class StringUtilsTest {
 		verifyAllVersionsOfFind(1, "aabc", "abc");
 		verifyAllVersionsOfFind(0, "aaaa", "a");
 		verifyAllVersionsOfFind(-1, "aaaa", "aaaaa");
-		verifyAllVersionsOfFind(0, "", "");
-		verifyAllVersionsOfFind(0, "a", "");
+		verifyAllVersionsOfFind(-1, "", "");
+		verifyAllVersionsOfFind(-1, "a", "");
 		verifyAllVersionsOfFind(22, "asdassdsdasdasdasdasdasddsasdsdsdaadsdsd", "sdd");
 		verifyAllVersionsOfFind(13, "baaabbbbaaabbababacabbbbaaabbbbbba", "ababaca");
 	}
@@ -106,5 +106,19 @@ class StringUtilsTest {
 		assertEquals("efabcd", cloneWithRotation("abcdef", 2));
 		assertEquals("fabcde", cloneWithRotation("abcdef", 1));
 		assertEquals("", cloneWithRotation("", 2));
+	}
+
+	private static String cloneWithAllPatternsReplaced(String text, String pattern, String replacement) {
+		StringBuilder sb = new StringBuilder(text);
+		StringUtils.replaceAll(sb, pattern, replacement);
+		return sb.toString();
+	}
+
+	@Test
+	void testReplaceAll() {
+		assertEquals("ccba", cloneWithAllPatternsReplaced("abaababa", "aba", "c"));
+		assertEquals("ba", cloneWithAllPatternsReplaced("abaababa", "aba", ""));
+		assertEquals("abc", cloneWithAllPatternsReplaced("abc", "", "c"));
+		assertEquals("ccccccccba", cloneWithAllPatternsReplaced("abaababa", "aba", "cccc"));
 	}
 }

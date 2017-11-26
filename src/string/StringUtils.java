@@ -1,7 +1,6 @@
 package string;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class StringUtils {
 	public static void removeRedundantSpaces(StringBuilder sb) {
@@ -91,6 +90,10 @@ public class StringUtils {
 	}
 
 	public static int find(String text, String pattern) {
+		if (pattern.length() == 0) {
+			return -1;
+		}
+
 		for (int occurrence_start = 0; occurrence_start + pattern.length() <= text.length(); ++occurrence_start) {
 			if (matchesFrom(text, occurrence_start, pattern)) {
 				return occurrence_start;
@@ -104,7 +107,7 @@ public class StringUtils {
 
 	public static int findUsingRabinKarp(String text, String pattern) {
 		if (pattern.length() == 0) {
-			return 0;
+			return -1;
 		}
 
 		long maxCharToPatternLength = 1;
@@ -159,7 +162,7 @@ public class StringUtils {
 
 	public static ArrayList<Integer> findAllUsingKMP(String text, String pattern) {
 		if (pattern.isEmpty()) {
-			return new ArrayList<Integer>(Arrays.asList(0));
+			return new ArrayList<Integer>();
 		}
 
 		int[] pi = computePi(pattern);
@@ -179,5 +182,66 @@ public class StringUtils {
 			}
 		}
 		return occurrences;
+	}
+
+	public static void replaceAll(StringBuilder text, String pattern, String replacement) {
+		ArrayList<Integer> occurrences = findAllUsingKMP(text.toString(), pattern);
+		{
+			// Remove overlapping occurrences.
+			int slowIndex = 0;
+			for (int fastIndex = 0; fastIndex < occurrences.size(); ++fastIndex) {
+				if (slowIndex == 0 || occurrences.get(slowIndex - 1) + pattern.length() <= occurrences.get(fastIndex)) {
+					occurrences.set(slowIndex, occurrences.get(fastIndex));
+					++slowIndex;
+				}
+			}
+			occurrences.subList(slowIndex, occurrences.size()).clear();
+		}
+
+		if (occurrences.isEmpty()) {
+			return;
+		}
+
+		if (replacement.length() <= pattern.length()) {
+			int oldTextIndex = 0;
+			int newTextIndex = 0;
+			int occurrenceIndex = 0;
+			while (oldTextIndex < text.length()) {
+				if (occurrenceIndex < occurrences.size() && oldTextIndex == occurrences.get(occurrenceIndex)) {
+					++occurrenceIndex;
+					for (int i = 0; i < replacement.length(); ++i) {
+						text.setCharAt(newTextIndex, replacement.charAt(i));
+						++newTextIndex;
+					}
+					oldTextIndex += pattern.length();
+				} else {
+					text.setCharAt(newTextIndex, text.charAt(oldTextIndex));
+					++newTextIndex;
+					++oldTextIndex;
+				}
+			}
+			assert newTextIndex == text.length() - occurrences.size() * (pattern.length() - replacement.length());
+			text.setLength(newTextIndex);
+		} else {
+			int oldTextIndex = text.length() - 1;
+			text.setLength(text.length() + occurrences.size() * (replacement.length() - pattern.length()));
+			int newTextIndex = text.length() - 1;
+			int occurrence_index = occurrences.size() - 1;
+			while (oldTextIndex >= 0) {
+				if (occurrence_index >= 0 && oldTextIndex == occurrences.get(occurrence_index) + pattern.length() - 1) {
+					--occurrence_index;
+					for (int i = replacement.length() - 1; i >= 0; --i) {
+						text.setCharAt(newTextIndex, replacement.charAt(i));
+						--newTextIndex;
+					}
+					oldTextIndex -= pattern.length();
+				} else {
+					text.setCharAt(newTextIndex, text.charAt(oldTextIndex));
+					--newTextIndex;
+					--oldTextIndex;
+				}
+			}
+			assert newTextIndex == -1;
+		}
 	}
 }
