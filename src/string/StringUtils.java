@@ -1,5 +1,8 @@
 package string;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class StringUtils {
 	public static void removeRedundantSpaces(StringBuilder sb) {
 		int slow_index = 0;
@@ -147,24 +150,34 @@ public class StringUtils {
 	}
 
 	public static int findUsingKMP(String text, String pattern) {
+		ArrayList<Integer> occurrences = findAllUsingKMP(text, pattern);
+		if (occurrences.isEmpty()) {
+			return -1;
+		}
+		return occurrences.get(0);
+	}
+
+	public static ArrayList<Integer> findAllUsingKMP(String text, String pattern) {
 		if (pattern.isEmpty()) {
-			return 0;
+			return new ArrayList<Integer>(Arrays.asList(0));
 		}
 
 		int[] pi = computePi(pattern);
+
+		ArrayList<Integer> occurrences = new ArrayList<Integer>();
 		int j = -1;
 		for (int i = 0; i < text.length(); ++i) {
 			// text[i - 1] == pattern[j]
-			while (j >= 0 && pattern.charAt(j + 1) != text.charAt(i)) {
+			while (j >= 0 && (j + 1 >= pattern.length() || pattern.charAt(j + 1) != text.charAt(i))) {
 				j = pi[j];
 			}
 			if (pattern.charAt(j + 1) == text.charAt(i)) {
 				++j;
 			}
 			if (j == pattern.length() - 1) {
-				return i - pattern.length() + 1;
+				occurrences.add(i - pattern.length() + 1);
 			}
 		}
-		return -1;
+		return occurrences;
 	}
 }

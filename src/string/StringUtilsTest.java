@@ -26,6 +26,12 @@ class StringUtilsTest {
 	}
 
 	@Test
+	void testFindAll() {
+		assertArrayEquals(new Integer[] { 0, 2, 4 },
+				StringUtils.findAllUsingKMP("abababab", "aba").toArray(new Integer[] {}));
+	}
+
+	@Test
 	void testString() {
 		String str = "ab\u1001";
 		assertEquals(3, str.length());
