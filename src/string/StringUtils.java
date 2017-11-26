@@ -4,51 +4,51 @@ import java.util.ArrayList;
 
 public class StringUtils {
 	public static void removeRedundantSpaces(StringBuilder sb) {
-		int slow_index = 0;
-		for (int fast_index = 0; fast_index < sb.length(); ++fast_index) {
-			if (sb.charAt(fast_index) == ' ') {
-				if (slow_index > 0 && sb.charAt(slow_index - 1) != ' ') {
-					sb.setCharAt(slow_index, ' ');
-					++slow_index;
+		int slowIndex = 0;
+		for (int fastIndex = 0; fastIndex < sb.length(); ++fastIndex) {
+			if (sb.charAt(fastIndex) == ' ') {
+				if (slowIndex > 0 && sb.charAt(slowIndex - 1) != ' ') {
+					sb.setCharAt(slowIndex, ' ');
+					++slowIndex;
 				}
 			} else {
-				sb.setCharAt(slow_index, sb.charAt(fast_index));
-				++slow_index;
+				sb.setCharAt(slowIndex, sb.charAt(fastIndex));
+				++slowIndex;
 			}
 		}
-		if (slow_index > 0 && sb.charAt(slow_index - 1) == ' ') {
-			--slow_index;
+		if (slowIndex > 0 && sb.charAt(slowIndex - 1) == ' ') {
+			--slowIndex;
 		}
-		sb.setLength(slow_index);
+		sb.setLength(slowIndex);
 	}
 
 	public static void deduplicate(StringBuilder sb) {
-		int slow_index = 0;
-		for (int fast_index = 0; fast_index < sb.length(); ++fast_index) {
-			if (slow_index == 0 || sb.charAt(slow_index - 1) != sb.charAt(fast_index)) {
-				sb.setCharAt(slow_index, sb.charAt(fast_index));
-				++slow_index;
+		int slowIndex = 0;
+		for (int fastIndex = 0; fastIndex < sb.length(); ++fastIndex) {
+			if (slowIndex == 0 || sb.charAt(slowIndex - 1) != sb.charAt(fastIndex)) {
+				sb.setCharAt(slowIndex, sb.charAt(fastIndex));
+				++slowIndex;
 			}
 		}
-		sb.setLength(slow_index);
+		sb.setLength(slowIndex);
 	}
 
 	public static void repeatedlyDeduplicate(StringBuilder sb) {
-		int slow_index = 0;
-		int fast_index = 0;
-		while (fast_index < sb.length()) {
-			if (slow_index > 0 && sb.charAt(slow_index - 1) == sb.charAt(fast_index)) {
-				while (fast_index < sb.length() && sb.charAt(slow_index - 1) == sb.charAt(fast_index)) {
-					++fast_index;
+		int slowIndex = 0;
+		int fastIndex = 0;
+		while (fastIndex < sb.length()) {
+			if (slowIndex > 0 && sb.charAt(slowIndex - 1) == sb.charAt(fastIndex)) {
+				while (fastIndex < sb.length() && sb.charAt(slowIndex - 1) == sb.charAt(fastIndex)) {
+					++fastIndex;
 				}
-				--slow_index;
+				--slowIndex;
 			} else {
-				sb.setCharAt(slow_index, sb.charAt(fast_index));
-				++slow_index;
-				++fast_index;
+				sb.setCharAt(slowIndex, sb.charAt(fastIndex));
+				++slowIndex;
+				++fastIndex;
 			}
 		}
-		sb.setLength(slow_index);
+		sb.setLength(slowIndex);
 	}
 
 	private static int greatestCommonDivisor(int a, int b) {
@@ -80,9 +80,9 @@ public class StringUtils {
 		}
 	}
 
-	private static boolean matchesFrom(String text, int occurrence_start, String pattern) {
+	private static boolean matchesFrom(String text, int occurrence, String pattern) {
 		for (int i = 0; i < pattern.length(); ++i) {
-			if (occurrence_start + i >= text.length() || text.charAt(occurrence_start + i) != pattern.charAt(i)) {
+			if (occurrence + i >= text.length() || text.charAt(occurrence + i) != pattern.charAt(i)) {
 				return false;
 			}
 		}
@@ -94,9 +94,9 @@ public class StringUtils {
 			return -1;
 		}
 
-		for (int occurrence_start = 0; occurrence_start + pattern.length() <= text.length(); ++occurrence_start) {
-			if (matchesFrom(text, occurrence_start, pattern)) {
-				return occurrence_start;
+		for (int occurrence = 0; occurrence + pattern.length() <= text.length(); ++occurrence) {
+			if (matchesFrom(text, occurrence, pattern)) {
+				return occurrence;
 			}
 		}
 		return -1;
@@ -226,10 +226,10 @@ public class StringUtils {
 			int oldTextIndex = text.length() - 1;
 			text.setLength(text.length() + occurrences.size() * (replacement.length() - pattern.length()));
 			int newTextIndex = text.length() - 1;
-			int occurrence_index = occurrences.size() - 1;
+			int occurrenceIndex = occurrences.size() - 1;
 			while (oldTextIndex >= 0) {
-				if (occurrence_index >= 0 && oldTextIndex == occurrences.get(occurrence_index) + pattern.length() - 1) {
-					--occurrence_index;
+				if (occurrenceIndex >= 0 && oldTextIndex == occurrences.get(occurrenceIndex) + pattern.length() - 1) {
+					--occurrenceIndex;
 					for (int i = replacement.length() - 1; i >= 0; --i) {
 						text.setCharAt(newTextIndex, replacement.charAt(i));
 						--newTextIndex;
