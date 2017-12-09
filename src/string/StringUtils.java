@@ -244,4 +244,25 @@ public class StringUtils {
 			assert newTextIndex == -1;
 		}
 	}
+
+	public static String toHex(int num) {
+		StringBuilder sb = new StringBuilder("0x");
+		boolean isLeadingZero = true;
+		for (int i = 7; i >= 0; --i) {
+			char[] base = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+			int digit = (num >> (i * 4)) & 0b1111;
+			if (digit == 0) {
+				if (!isLeadingZero) {
+					sb.append(base[digit]);
+				}
+			} else {
+				sb.append(base[digit]);
+				isLeadingZero = false;
+			}
+		}
+		if (isLeadingZero) {
+			sb.append('0');
+		}
+		return sb.toString();
+	}
 }

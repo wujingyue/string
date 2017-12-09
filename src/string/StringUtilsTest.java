@@ -121,4 +121,11 @@ class StringUtilsTest {
 		assertEquals("abc", cloneWithAllPatternsReplaced("abc", "", "c"));
 		assertEquals("ccccccccba", cloneWithAllPatternsReplaced("abaababa", "aba", "cccc"));
 	}
+
+	@Test
+	void testToHex() {
+		assertEquals("0x7FFFFFFF", StringUtils.toHex(Integer.MAX_VALUE));
+		assertEquals("0xAA", StringUtils.toHex(10 * 16 + 10));
+		assertEquals("0x0", StringUtils.toHex(0));
+	}
 }
